@@ -4,8 +4,8 @@
 
 ## 功能
 
-- 优先读取 [Weather-Calendar-Assistant](https://github.com/Gu-gu-gu-gu-gu/Weather-Calendar-Assistant) 已解析的 \`WORLD\` 世界时间、地点、国家与时代模式，不修改它的源码或聊天数据。
-- 原插件未安装或尚无有效状态时，直接从当前聊天的 \`[[WORLD]]...[[/WORLD]]\` 读取明确的日期（不自行推断或推进剧情时间）；亦可对当前聊天手动覆盖日期、国家和历法。
+- 优先读取 [Weather-Calendar-Assistant](https://github.com/Gu-gu-gu-gu-gu/Weather-Calendar-Assistant) 已解析的 `WORLD` 世界时间、地点、国家与时代模式，不修改它的源码或聊天数据。
+- 原插件未安装或尚无有效状态时，直接从当前聊天的 `[[WORLD]]...[[/WORLD]]` 读取明确的日期（不自行推断或推进剧情时间）；亦可对当前聊天手动覆盖日期、国家和历法。
 - 三个数据来源自动分工：国际节日、农历/节气/传统节日、中国官方假期及调休；重复节日合并，保留来源与类型属性。
 - 默认将**当天及未来七天的节庆摘要**提供给模型；当 Weather-Calendar-Assistant 已启用自己的日历注入时，减少相同公休/节令重复。**不会自动替任何人物编排日程**。
 - 默认开放全局异步查询接口，供任意前端组件调用；支持单日、整月、任意连续范围（最长 366 天）。
@@ -15,9 +15,9 @@
 
 把本仓库作为第三方前端扩展安装至：
 
-\`\`\`
+```
 SillyTavern/public/scripts/extensions/third-party/sishililan/
-\`\`\`
+```
 
 在 SillyTavern → 扩展 → 安装扩展中粘贴仓库 Git 克隆地址也可以，**但私有仓库需要已经配置好 GitHub 访问凭据**；否则请先取得仓库压缩包，在对应路径解压。刷新酒馆后，在扩展设置内找到「四时历览」。
 
@@ -37,18 +37,18 @@ SillyTavern/public/scripts/extensions/third-party/sishililan/
 
 建议先安装 Weather-Calendar-Assistant（其扩展加载顺序为 100），再安装四时历览（加载顺序为 150）。本插件优先读取：
 
-- \`chatMetadata.worldEngine.currentTime\`
-- \`chatMetadata.worldEngine.currentLocation\`
-- \`extensionSettings.WorldEngine.countryCode\`
-- \`extensionSettings.WorldEngine.worldEra\`
+- `chatMetadata.worldEngine.currentTime`
+- `chatMetadata.worldEngine.currentLocation`
+- `extensionSettings.WorldEngine.countryCode`
+- `extensionSettings.WorldEngine.worldEra`
 
 当 WCA 处理新消息时，本插件会等待其完成本轮时间解析标记，然后更新自身查询和注入。若 WCA 已开启日历注入，本插件默认仅补充其他节庆，减少重叠；**不会修改 WCA 的设置**。由于两套扩展不共享注入清单，节日异名等特殊情况仍可能出现重复，此时可在原插件里调整日历注入设置。
 
 ## 供其他组件调用
 
-插件加载后使用 \`window.SishiCalendar\`。以下方法均返回 Promise（\`getWorldState\` 除外）：
+插件加载后使用 `window.SishiCalendar`。以下方法均返回 Promise（`getWorldState` 除外）：
 
-\`\`\`js
+```js
 // 当前剧情世界时间、地区、模式，以及来源
 const state = window.SishiCalendar.getWorldState();
 
@@ -74,11 +74,11 @@ const range = await window.SishiCalendar.getRangeInfo({
 const unsubscribe = window.SishiCalendar.onUpdate(({ world, days, ready }) => {
   if (ready) console.log(world.date, days);
 });
-\`\`\`
+```
 
-\`getDayInfo\` 返回数据包含 \`date\`、\`country\`、\`era\`、\`weekday\`、\`lunar\`、\`lunarYear\`、\`solarTerm\`、\`workday\`、\`events\`、\`available\`、\`warnings\`。每个 \`events\` 条目包含 \`date\`、\`name\`、\`category\`、\`source\`，并在合并重复节日后附带 \`categories\`、\`sources\`。
+`getDayInfo` 返回数据包含 `date`、`country`、`era`、`weekday`、`lunar`、`lunarYear`、`solarTerm`、`workday`、`events`、`available`、`warnings`。每个 `events` 条目包含 `date`、`name`、`category`、`source`，并在合并重复节日后附带 `categories`、`sources`。
 
-也支持监听浏览器事件 \`sishicalendar:updated\`，详情在 \`event.detail\`。普通纯文本正则本身无法直接调用 JavaScript：其渲染器或关联的前端脚本需要主动调用这个接口。
+也支持监听浏览器事件 `sishicalendar:updated`，详情在 `event.detail`。普通纯文本正则本身无法直接调用 JavaScript：其渲染器或关联的前端脚本需要主动调用这个接口。
 
 ## 设置
 
@@ -101,6 +101,6 @@ const unsubscribe = window.SishiCalendar.onUpdate(({ world, days, ready }) => {
 
 - lunar-javascript：MIT，© 2018 6tail
 - chinese-days：MIT，© 2024 Yawei Sun
-- date-holidays：代码 ISC，节日规则数据 CC BY-SA 4.0；须保留相应许可和归属信息。具体归属请参见原项目 \`LICENSE\` 和节日数据文件。
+- date-holidays：代码 ISC，节日规则数据 CC BY-SA 4.0；须保留相应许可和归属信息。具体归属请参见原项目 `LICENSE` 和节日数据文件。
 
 此项目仅调用上述开源库及参考 Weather-Calendar-Assistant 的接入模式；**未复制或修改原 Weather-Calendar-Assistant 插件**。

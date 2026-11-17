@@ -181,7 +181,7 @@ async function getChineseModern(date) {
     return { events, loaded: true, workday };
 }
 
-async function getLunarEvents(date) {
+async function getLunarEvents(date, era) {
     if (!await ensureLibrary('lunar')) return { events: [], loaded: false, lunar: null, solarTerm: '' };
     const [year, month, day] = date.split('-').map(Number);
     if (year < 1900 || year > 2100) return { events: [], loaded: false, lunar: null, solarTerm: '', limited: true };
@@ -195,7 +195,7 @@ async function getLunarEvents(date) {
         const traditional = [
             ...(typeof lunar.getFestivals === 'function' ? lunar.getFestivals() : []),
             ...(typeof lunar.getOtherFestivals === 'function' ? lunar.getOtherFestivals() : []),
-            ...(typeof solar.getFestivals === 'function' ? solar.getFestivals() : []),
+            ...(era === 'modern' && typeof solar.getFestivals === 'function' ? solar.getFestivals() : []),
         ];
         for (const name of new Set(traditional)) {
             addEvent(events, name, 'traditional', 'lunar-javascript', date);
@@ -220,7 +220,7 @@ export async function getDayInfo(input = {}) {
     const key = date + '|' + country + '|' + era;
     if (dayCache.has(key)) return dayCache.get(key);
     const task = (async () => {
-        const lunarTask = country === 'CN' ? getLunarEvents(date) : Promise.resolve({ events: [], loaded: false, lunar: null, solarTerm: '' });
+        const lunarTask = country === 'CN' ? getLunarEvents(date, era) : Promise.resolve({ events: [], loaded: false, lunar: null, solarTerm: '' });
         const globalTask = era === 'modern' ? getGlobalEvents(date, country) : Promise.resolve({ events: [], loaded: false });
         const chineseTask = era === 'modern' && country === 'CN'
             ? getChineseModern(date)

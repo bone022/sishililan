@@ -1,0 +1,17 @@
+/* 四时历览 · 清爽、兼容酒馆明暗主题 */
+#ss-settings-panel { --ss-line: rgba(135, 117, 101, .22); --ss-accent: #927057; }
+#ss-settings-panel .ss-content { padding: 10px 12px 15px; }
+#ss-settings-panel .ss-subtitle { font-size: 12px; opacity: .75; margin: 0 0 12px; }
+#ss-settings-panel .ss-switches { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+#ss-settings-panel .ss-switches label { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; cursor: pointer; }
+#ss-settings-panel input[type="checkbox"] { accent-color: var(--ss-accent); }
+#ss-settings-panel .ss-status { padding: 9px 10px; border: 1px solid var(--ss-line); background: rgba(150, 131, 110, .07); border-radius: 9px; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+#ss-settings-panel .ss-fields { display: grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap: 10px; }
+#ss-settings-panel .ss-field { display: flex; flex-direction: column; gap: 5px; min-width: 0; font-size: 12px; }
+#ss-settings-panel .ss-field > input,
+#ss-settings-panel .ss-field > select { width: 100%; min-width: 0; box-sizing: border-box; padding: 7px 8px; border-radius: 8px; border: 1px solid var(--ss-line); color: inherit; background: var(--SmartThemeBlurTintColor, transparent); }
+#ss-settings-panel .ss-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+#ss-settings-panel .ss-buttons button { min-width: 92px; }
+#ss-settings-panel .ss-result { margin-top: 10px; padding: 9px 10px; background: rgba(150, 131, 110, .055); border: 1px solid var(--ss-line); border-radius: 9px; font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.65; }
+#ss-settings-panel .ss-help { font-size: 11px; line-height: 1.55; opacity: .73; margin: 9px 0 0; }
+@media(max-width:500px){ #ss-settings-panel .ss-fields { grid-template-columns: 1fr; } }

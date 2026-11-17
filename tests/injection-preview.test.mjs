@@ -28,6 +28,9 @@ function createFixture() {
         SillyTavern: { getContext: () => context },
     };
     env.window = env;
+    // 原入口模块从 calendar.js 导入的接口，在此测试里使用桩函数隔离注入预览。
+    env.clearCache = () => {};
+    env.validateDate = date => /^\d{4}-\d{2}-\d{2}$/.test(String(date || '')) ? date : null;
     vm.createContext(env);
     vm.runInContext(source, env, { timeout: 5000 });
     return { preview, context, calls, env };

@@ -176,7 +176,8 @@ function buildInjection(days, world) {
 function setPrompt(value) {
     const ctx = context();
     if (typeof ctx?.setExtensionPrompt === 'function') {
-        ctx.setExtensionPrompt(PROMPT_KEY, value, 1, 1);
+        // 将每日变动的节庆数据置于聊天最末端的独立 System 深度，避免与深度 1 的 User 人设合并。
+        ctx.setExtensionPrompt(PROMPT_KEY, value, 1, 0, false, 0);
     }
 }
 

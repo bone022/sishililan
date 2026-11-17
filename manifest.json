@@ -1,0 +1,12 @@
+{
+  "display_name": "四时历览｜世界历法与节庆",
+  "loading_order": 150,
+  "requires": [],
+  "optional": [],
+  "js": "index.js",
+  "css": "style.css",
+  "author": "bone022",
+  "version": "0.1.0",
+  "homePage": "https://github.com/bone022/sishililan",
+  "auto_update": false
+}

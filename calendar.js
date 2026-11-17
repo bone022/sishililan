@@ -2,6 +2,7 @@
 const LIBRARIES = {
     global: {
         urls: [
+            new URL('./vendor/date-holidays.umd.min.js', import.meta.url).href,
             'https://cdn.jsdelivr.net/npm/date-holidays@3.39.2/dist/umd.min.js',
             'https://unpkg.com/date-holidays@3.39.2/dist/umd.min.js',
         ],
@@ -9,6 +10,7 @@ const LIBRARIES = {
     },
     lunar: {
         urls: [
+            new URL('./vendor/lunar.js', import.meta.url).href,
             'https://cdn.jsdelivr.net/npm/lunar-javascript@1.7.8/lunar.js',
             'https://unpkg.com/lunar-javascript@1.7.8/lunar.js',
         ],
@@ -16,6 +18,7 @@ const LIBRARIES = {
     },
     china: {
         urls: [
+            new URL('./vendor/chinese-days.umd.min.js', import.meta.url).href,
             'https://cdn.jsdelivr.net/npm/chinese-days@1.5.10/dist/index.min.js',
             'https://unpkg.com/chinese-days@1.5.10/dist/index.min.js',
         ],

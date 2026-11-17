@@ -87,6 +87,7 @@ const unsubscribe = window.SishiCalendar.onUpdate(({ world, days, ready }) => {
 - **国家代码**：留空继承 WCA，例如 CN、US、JP、GB。
 - **历法**：自动继承、现代、古代。
 - **手动剧情日期**：仅当前聊天生效；留空则读取 WCA/WORLD。
+- **预览注入内容**：像 World Engine 一样在设置面板内展开/收起，直接展示最近一次交给酒馆的完整注入原文（不会额外调用模型或重新生成一份预览）。
 - **重新同步、测试查询**：不必打开开发者控制台。
 
 ## 重要说明

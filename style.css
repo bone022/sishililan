@@ -15,3 +15,7 @@
 #ss-settings-panel .ss-result { margin-top: 10px; padding: 9px 10px; background: rgba(150, 131, 110, .055); border: 1px solid var(--ss-line); border-radius: 9px; font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.65; }
 #ss-settings-panel .ss-help { font-size: 11px; line-height: 1.55; opacity: .73; margin: 9px 0 0; }
 @media(max-width:500px){ #ss-settings-panel .ss-fields { grid-template-columns: 1fr; } }
+
+#ss-settings-panel .ss-preview-controls { margin: 9px 0 0; }
+#ss-settings-panel .ss-prompt-preview { max-height: 200px; overflow-y: auto; font-family: inherit; }
+#ss-settings-panel .ss-prompt-preview[hidden] { display: none; }

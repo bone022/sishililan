@@ -7,6 +7,7 @@ const updateListeners = new Set();
 let refreshId = 0;
 let initialized = false;
 let lastResult = null;
+let lastInjectedPrompt = '';
 
 function context() { return globalThis.SillyTavern?.getContext?.() || null; }
 
@@ -178,7 +179,22 @@ function setPrompt(value) {
     if (typeof ctx?.setExtensionPrompt === 'function') {
         // 将每日变动的节庆数据置于聊天最末端的独立 System 深度，避免与深度 1 的 User 人设合并。
         ctx.setExtensionPrompt(PROMPT_KEY, value, 1, 0, false, 0);
+        lastInjectedPrompt = String(value);
+    } else {
+        lastInjectedPrompt = '';
     }
+    renderInjectionPreview();
+}
+
+function renderInjectionPreview() {
+    const box = document.getElementById('ss-prompt-preview');
+    if (!box) return;
+    // 直接展示最近一次交给 setExtensionPrompt 的原文，不重新计算另一份预览。
+    box.textContent = lastInjectedPrompt
+        || (!settings().enabled ? '服务已关闭，当前没有注入内容。'
+            : !settings().autoInject ? '自动注入已关闭，当前没有注入内容。'
+                : !getWorldState().date ? '尚未识别剧情日期，当前没有注入内容。'
+                    : '当前没有可注入的节庆内容，或本轮同步尚未完成。');
 }
 
 function emitUpdate(data) {
@@ -283,6 +299,8 @@ function mountPanel() {
         '<p class="ss-subtitle">独立历法与节庆服务 · 供状态栏、日历及其他组件调用</p>' +
         '<div class="ss-switches"><label><input id="ss-enabled" type="checkbox"> 启用服务</label><label><input id="ss-auto-inject" type="checkbox"> 自动补充今日与未来7天节庆</label></div>' +
         '<p id="ss-current-state" class="ss-status"></p>' +
+        '<div class="ss-preview-controls"><button id="ss-preview-prompt" class="menu_button" type="button" aria-controls="ss-prompt-preview" aria-expanded="false">预览注入内容</button></div>' +
+        '<div id="ss-prompt-preview" class="ss-result ss-prompt-preview" aria-live="polite" hidden></div>' +
         '<div class="ss-fields" id="ss-override-fields"></div>' +
         '<div class="ss-buttons"><button id="ss-refresh" class="menu_button" type="button">重新同步</button><button id="ss-test" class="menu_button" type="button">测试查询</button></div>' +
         '<div id="ss-test-result" class="ss-result" aria-live="polite">无需副模型或额外 AI API。</div>' +
@@ -324,6 +342,13 @@ function mountPanel() {
     });
     era.addEventListener('change', () => { chatConfig().era = era.value; saveChat(); clearCache(); refresh(); });
     date.addEventListener('change', () => { chatConfig().date = date.value; saveChat(); refresh(); });
+    document.getElementById('ss-preview-prompt').addEventListener('click', event => {
+        const box = document.getElementById('ss-prompt-preview');
+        const opening = box.hidden;
+        box.hidden = !opening;
+        event.currentTarget.setAttribute('aria-expanded', String(opening));
+        if (opening) renderInjectionPreview();
+    });
     document.getElementById('ss-refresh').addEventListener('click', async () => {
         renderMessage('正在读取世界状态并同步节日……');
         const result = await refresh();
@@ -359,6 +384,7 @@ function syncControls() {
     document.getElementById('ss-era').value = opts.era || '';
     document.getElementById('ss-date').value = opts.date || '';
     renderWorldStatus(getWorldState(), lastResult?.days);
+    renderInjectionPreview();
 }
 
 function init() {
